@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const payload = {};
 
 if (process.env.INPUT_MSGTYPE === 'text') {
@@ -122,18 +120,20 @@ console.log('[action-wechat-work] The message content in JSON format...', JSON.s
 const url = process.env.WECHAT_WORK_BOT_WEBHOOK;
 
 (async () => {
-    console.log('[action-wechat-work] Sending message ...');
-    await axios.post(url, JSON.stringify(payload), {
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    });
-    console.log('[action-wechat-work] Message sent Success! Shutting down ...');
-    process.exit(0);
+  console.log('[action-wechat-work] Sending message ...');
+  await fetch(url, {
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  });
+  console.log('[action-wechat-work] Message sent Success! Shutting down ...');
+  process.exit(0);
 })()
-    .catch((err) => {
-        console.error('[action-wechat-work] Message sent error:');
-        err.message && console.error(`[action-wechat-work] err.message: ${err.message}`);
-        err.response && err.response.data && console.error(`[action-wechat-work] err.response.data: ${err.response.data}`);
-        process.exit(1);
-    });
+  .catch((err) => {
+    console.error('[action-wechat-work] Message sent error:');
+    err.message && console.error(`[action-wechat-work] err.message: ${err.message}`);
+    err.response && err.response.data && console.error(`[action-wechat-work] err.response.data: ${err.response.data}`);
+    process.exit(1);
+  });
